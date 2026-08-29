@@ -5,6 +5,27 @@
 <div class="flex justify-center items-center">
     <div class="bg-white p-6 rounded-lg w-full lg:w-3/4">
         <h1 class="text-4xl">Book Tracker</h1>
+        <p class="mt-4">Your books are listed below</p>
+        <table class="table table-zebra mt-8" id="book-table">
+            <thead>
+                <tr>
+                    <th>NAME</th>
+                    <th>GENRE</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                    <tr>
+                        <td>{{ book.name }}</td>
+                        <td>{{ book.genre }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td>There are no books in the library</td>
+                    </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}
