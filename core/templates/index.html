@@ -3,29 +3,52 @@
 {% block content %}
 
 <div class="flex justify-center items-center">
-    <div class="bg-white p-6 rounded-lg w-full lg:w-3/4">
-        <h1 class="text-4xl">Book Tracker</h1>
-        <p class="mt-4">Your books are listed below</p>
-        <table class="table table-zebra mt-8" id="book-table">
-            <thead>
-                <tr>
-                    <th>NAME</th>
-                    <th>GENRE</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for book in books %}
+    <div class="bg-white p-6 rounded-lg w-full lg:w-3/4 grid grid-cols-4 gap-4">
+        <div class="col-span-3"></div>
+            <h1 class="text-4xl">Book Tracker</h1>
+            <p class="mt-4">Your books are listed below</p>
+            <table class="table table-zebra mt-8" id="book-table">
+                <thead>
                     <tr>
-                        <td>{{ book.name }}</td>
-                        <td>{{ book.genre }}</td>
+                        <th>NAME</th>
+                        <th>GENRE</th>
                     </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                        {% include 'partials/book-row.html' %}
                     {% empty %}
                     <tr>
                         <td>There are no books in the library</td>
                     </tr>
                     {% endfor %}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-span-1">
+            <h1 class="text-4xl mb-4">Add Book</h1>
+            <form id="book-form" 
+                hx-post="{% url 'index' %}"
+                hx-target="#book-table > tbody"
+                hx-swap="afterbegin">
+                
+                {% csrf_token %}
+
+                <div id="form-errors" class="text-red-500">
+                    {{ form.non_field_errors }}
+                </div>
+
+                <fieldset class="fieldset">
+                    <label class="label text-lg" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+                    {{ form.name }}
+                </fieldset>
+                <fieldset class="fieldset">
+                    <label class="label text-lg" for="{{ form.genre.id_for_label }}">{{ form.genre.label }}</label>
+                    {{ form.genre }}
+                </fieldset>
+                <button class="btn btn-success mt-4">Submit</button>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}
