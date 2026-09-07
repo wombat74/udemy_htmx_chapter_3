@@ -6,7 +6,7 @@ from core.models import Book
 @login_required
 def index(request):
     if request.method == 'POST':
-        form = BookForm(request.POST)
+        form = BookForm(request.POST, user=request.user)
         if form.is_valid() == True:
             name = form.cleaned_data['name']
             genre = form.cleaned_data['genre']
@@ -15,6 +15,13 @@ def index(request):
             if not request.user.books.filter(id=book.id).exists():
                 request.user.books.add(book)
                 return render(request, 'partials/book-row.html', {'book': book})
+        else:
+            # return Form for the user to correct
+            context = {'form': form}
+            response = render(request, 'partials/book-form.html', context)
+            response['HX-Retarget'] = '#book-form'
+            response['HX-Reswap'] = 'outerHTML'
+            return response
 
     books = request.user.books.all()
     context = {'books': books, 'form': BookForm()}

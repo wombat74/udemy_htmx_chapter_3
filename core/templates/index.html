@@ -14,11 +14,15 @@
                         <th>GENRE</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody hx-on::after-settle="
+                    this.firstChild.style.background = 'lightgreen';
+                    setTimeout(() => this.firstChild.style.background = 'white', 2000);
+                    clearForm();
+                    ">
                     {% for book in books %}
                         {% include 'partials/book-row.html' %}
                     {% empty %}
-                    <tr>
+                    <tr class="empty-message">
                         <td>There are no books in the library</td>
                     </tr>
                     {% endfor %}
@@ -27,27 +31,7 @@
         </div>
         <div class="col-span-1">
             <h1 class="text-4xl mb-4">Add Book</h1>
-            <form id="book-form" 
-                hx-post="{% url 'index' %}"
-                hx-target="#book-table > tbody"
-                hx-swap="afterbegin">
-                
-                {% csrf_token %}
-
-                <div id="form-errors" class="text-red-500">
-                    {{ form.non_field_errors }}
-                </div>
-
-                <fieldset class="fieldset">
-                    <label class="label text-lg" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
-                    {{ form.name }}
-                </fieldset>
-                <fieldset class="fieldset">
-                    <label class="label text-lg" for="{{ form.genre.id_for_label }}">{{ form.genre.label }}</label>
-                    {{ form.genre }}
-                </fieldset>
-                <button class="btn btn-success mt-4">Submit</button>
-            </form>
+            {% include 'partials/book-form.html' %}
         </div>
     </div>
 </div>
