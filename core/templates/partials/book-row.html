@@ -4,7 +4,7 @@
     <td>
         <button class="btn btn-sm btn-error"
             hx-delete="{% url "delete-book" book.pk %}"
-            hx-on:book-deleted="this.closest('tr').remove()"
+            hx-on:book-deleted="fadeOutAndRemove(this.closest('tr'))"
             hx-trigger="confirmed"
             onClick="Swal.fire({
                 title: 'Confirm', 

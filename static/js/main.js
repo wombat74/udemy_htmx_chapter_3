@@ -20,3 +20,9 @@ let removeEmptyBooksMessage = () => {
         emptyRow.remove();
     }
 }
+
+let fadeOutAndRemove = (tr) => {
+    tr.style.transition = 'opacity .5s ease'
+    tr.style.opacity = 0
+    setTimeout(() => tr.remove(), 500)
+}
