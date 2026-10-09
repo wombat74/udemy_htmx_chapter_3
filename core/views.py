@@ -65,4 +65,10 @@ def book_detail(request, pk):
         'book': book,
         'form': BookForm(initial={'name': book.name, 'genre': book.genre})
     }
-    return render(request, 'book-detail.html', context)
+
+    if request.headers.get('HX-Request') == 'true':
+        template = 'partials/book-detail-partial.html'
+    else:
+        template = 'book-detail.html'
+
+    return render(request, template, context)
